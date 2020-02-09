@@ -1,43 +1,56 @@
 document.addEventListener('DOMContentLoaded', () => {
-  let body = document.querySelector("body");
-  body.style = "margin: auto"
+  const body = document.querySelector('body');
+  body.style = 'margin: auto';
 
-  let WIDTH = 800;
-  let HEIGHT = 600;
+  const WIDTH = 800;
+  const HEIGHT = 600;
 
-  let c = document.createElement("canvas");
-  c.id = "c"
+  const c = document.createElement('canvas');
+  c.id = 'c';
   c.width = WIDTH;
   c.height = HEIGHT;
-  c.style = "border: 1px solid black; margin: auto";
-  let ctx = c.getContext("2d");
+  c.style = 'border: 1px solid black; margin: auto';
+  const ctx = c.getContext('2d');
   body.appendChild(c);
 
-  let imageData = ctx.getImageData(0, 0, c.width, c.height);
-  let data = imageData.data;
+  const imageData = ctx.getImageData(0, 0, c.width, c.height);
+  const { data } = imageData;
 
-  let scene = {
-    camera: {p: {x: 0, y: 0, z: 0}},
+  class Color {
+    constructor(r, g, b) {
+      this.r = r;
+      this.g = g;
+      this.b = b;
+    }
+
+    rgb() {
+      const { r, g, b } = this;
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+  }
+
+  const scene = {
+    camera: { p: { x: 0, y: 0, z: 0 } },
     objects: [],
-    light: {x: -10, y: 20, z: -40},
-    ambient: new Color(35,15,25),
+    light: { x: -10, y: 20, z: -40 },
+    ambient: new Color(35, 15, 25),
   };
 
-  function render(scene) {
-    let { objects, camera, light } = scene;
+  function render() {
+    const { objects, camera, light } = scene;
 
-    for (let j = 0; j < HEIGHT; j++) {
-      for (let i = 0; i < WIDTH; i++) {
-        let px = (i + (j*WIDTH));
-        let p = normalize({
-          x: ((2*(i+.5)/WIDTH)-1)*(WIDTH/HEIGHT),
-          y: (1-(2*(j+.5)/HEIGHT)),
+    for (let j = 0; j < HEIGHT; j += 1) {
+      for (let i = 0; i < WIDTH; i += 1) {
+        const px = (i + (j * WIDTH));
+        const p = normalize({
+          x: (((2 * (i + 0.5)) / WIDTH)-1) * (WIDTH / HEIGHT),
+          y: (1 - ((2 * (j + 0.5)) / HEIGHT)),
           z: -3
         });
 
         let t = Infinity;
         let objectT = Infinity;
-        for (let k = 0; k < objects.length; k++) {
+        for (let k = 0; k < objects.length; k += 1) {
           objectT = Math.min(objects[k].intersect(p, camera), objectT);
           if (objectT < t) {
             let n = objects[k].computeNormal(vMultiply(p, objectT));
@@ -89,16 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return n;
     }
   }
-
-  function Color(r,g,b) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-  };
-
-  Color.prototype = {
-    rgb: function() {return "rgb("+this.r+", "+this.g+", "+this.b+")";}
-  };
 
   function dotProduct(v1, v2) {
     return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z)
