@@ -24,9 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function render(scene) {
-    let objects = scene.objects;
-    let camera = scene.camera;
-    let light = scene.light;
+    let { objects, camera, light } = scene;
 
     for (let j = 0; j < HEIGHT; j++) {
       for (let i = 0; i < WIDTH; i++) {
