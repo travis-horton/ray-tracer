@@ -82,9 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       return solution;
-      //does the ray intersect this sphere...?
-      //return Infinity or distance to intersection.
     },
+
     computeNormal(pHit) {
       let n = normalize(vMinus(pHit, this.p));
       return n;
@@ -96,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     this.g = g;
     this.b = b;
   };
+
   Color.prototype = {
     rgb: function() {return "rgb("+this.r+", "+this.g+", "+this.b+")";}
   };
