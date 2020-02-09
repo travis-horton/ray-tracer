@@ -1,38 +1,38 @@
-var body = document.querySelector("body");
+let body = document.querySelector("body");
 body.style = "margin: auto"
-var c = document.createElement("canvas");
-body.appendChild(c);
+
+let WIDTH = 800;
+let HEIGHT = 600;
+
+let c = document.createElement("canvas");
 c.id = "c"
-var width = 800;
-var height = 600;
-c.width = width;
-c.height = height;
+c.width = WIDTH;
+c.height = HEIGHT;
 c.style = "border: 1px solid black; margin: auto";
-var ctx = c.getContext("2d");
-var imageData = ctx.getImageData(0, 0, c.width, c.height);
-var data = imageData.data;
+let ctx = c.getContext("2d");
+body.appendChild(c);
 
-var scene = {};
+let imageData = ctx.getImageData(0, 0, c.width, c.height);
+let data = imageData.data;
 
-scene.camera = {p: {x: 0, y: 0, z: 0}};
-
-scene.objects = [];
-
-scene.light = {x: -10, y: 20, z: -40};
-
-scene.ambient = new Color(35,15,25);
+let scene = {
+  camera: {p: {x: 0, y: 0, z: 0}},
+  objects: [],
+  light: {x: -10, y: 20, z: -40},
+  ambient: new Color(35,15,25),
+};
 
 function render(scene) {
   let objects = scene.objects;
   let camera = scene.camera;
   let light = scene.light;
 
-  for (let j = 0; j < height; j++) {
-    for (let i = 0; i < width; i++) {
-      let px = (i + (j*width));
+  for (let j = 0; j < HEIGHT; j++) {
+    for (let i = 0; i < WIDTH; i++) {
+      let px = (i + (j*WIDTH));
       let p = normalize({
-        x: ((2*(i+.5)/width)-1)*(width/height),
-        y: (1-(2*(j+.5)/height)),
+        x: ((2*(i+.5)/WIDTH)-1)*(WIDTH/HEIGHT),
+        y: (1-(2*(j+.5)/HEIGHT)),
         z: -3
       });
 
