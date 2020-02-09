@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (objectT < t) {
             let n = objects[k].computeNormal(vMultiply(p, objectT));
             let l = lightVector(light, vMultiply(p, objectT));
-            let directLight = Math.max(dotProduct(n,l),0)
+            let directLight = Math.max(dotProduct(n, l), 0)
             let objectColor = {
               r: objects[k].c.r * directLight,
               g: objects[k].c.g * directLight,
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
           t = objectT;
         };
         if (objectT === Infinity) {
-          colorPx(px,scene.ambient);
+          colorPx(px, scene.ambient);
         };
       }
     }
@@ -83,9 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
     intersect(ray, camera) {
       let oMinusP = vMinus(camera.p, this.p);
       let a = dotProduct(ray, ray);
-      let b = 2*(dotProduct(ray, oMinusP));
-      let c = dotProduct(oMinusP,oMinusP) - square(this.r);
-      let d = b*b - 4*a*c;
+      let b = 2 * (dotProduct(ray, oMinusP));
+      let c = dotProduct(oMinusP, oMinusP) - square(this.r);
+      let d = b * b - 4 * a * c;
       let solution = Infinity;
       if (d > 0) {
         solution = Math.max(
