@@ -1,5 +1,3 @@
-import Color from "./modules/color.mjs";
-
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.querySelector('body');
   body.style = 'margin: auto';
