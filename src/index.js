@@ -1,3 +1,6 @@
+import Color from 'rgb-color-class';
+console.log(Color);
+
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.querySelector('body');
   body.style = 'margin: auto';
@@ -46,19 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     normalV.y = v.y / (vLength(v));
     normalV.z = v.z / (vLength(v));
     return normalV;
-  }
-
-  class Color {
-    constructor(r, g, b) {
-      this.r = r;
-      this.g = g;
-      this.b = b;
-    }
-
-    rgb() {
-      const { r, g, b } = this;
-      return `rgb(${r}, ${g}, ${b})`;
-    }
   }
 
   class Sphere {
