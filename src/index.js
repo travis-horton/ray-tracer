@@ -3,7 +3,6 @@ import Vector3d from './modules/3d-vectors';
 
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.querySelector('body');
-  body.style = 'margin: auto';
 
   const WIDTH = 800;
   const HEIGHT = 600;
