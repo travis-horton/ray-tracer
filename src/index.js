@@ -1,5 +1,5 @@
 import Color from 'rgb-color-class';
-console.log(Color);
+import Vector3d from './modules/3d-vectors';
 
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.querySelector('body');
@@ -19,9 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const imageData = ctx.getImageData(0, 0, c.width, c.height);
   const { data } = imageData;
 
-  function dotProduct(v1, v2) {
-    return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
-  }
+  const { dotProduct } = Vector3d;
 
   function vMinus(v1, v2) {
     const newVector = {};
@@ -81,11 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function colorPx(px, color) {
-    data[px * 4] = color.r;
-    data[px * 4 + 1] = color.g;
-    data[px * 4 + 2] = color.b;
-    data[px * 4 + 3] = 255;
+  function colorPx(pixelIndex, color) {
+    data[pixelIndex * 4] = color.r;
+    data[pixelIndex * 4 + 1] = color.g;
+    data[pixelIndex * 4 + 2] = color.b;
+    data[pixelIndex * 4 + 3] = 255;
   }
 
   function lightVector(light, pHit) {
@@ -104,8 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (let j = 0; j < HEIGHT; j += 1) {
       for (let i = 0; i < WIDTH; i += 1) {
-        const px = (i + (j * WIDTH));
-        const p = normalize({
+        const pixelIndex = (i + (j * WIDTH));
+        const rayFromThisPixel = normalize({
           x: (((2 * (i + 0.5)) / WIDTH) - 1) * (WIDTH / HEIGHT),
           y: (1 - ((2 * (j + 0.5)) / HEIGHT)),
           z: -3,
@@ -114,48 +112,40 @@ document.addEventListener('DOMContentLoaded', () => {
         let t = Infinity;
         let objectT = Infinity;
         for (let k = 0; k < objects.length; k += 1) {
-          objectT = Math.min(objects[k].intersect(p, camera), objectT);
+          objectT = Math.min(objects[k].intersect(rayFromThisPixel, camera), objectT);
           if (objectT < t) {
-            const n = objects[k].computeNormal(vMultiply(p, objectT));
-            const l = lightVector(light, vMultiply(p, objectT));
+            const n = objects[k].computeNormal(vMultiply(rayFromThisPixel, objectT));
+            const l = lightVector(light, vMultiply(rayFromThisPixel, objectT));
             const directLight = Math.max(dotProduct(n, l), 0);
             const objectColor = {
               r: objects[k].c.r * directLight,
               g: objects[k].c.g * directLight,
               b: objects[k].c.b * directLight,
             };
-            colorPx(px, objectColor);
+            colorPx(pixelIndex, objectColor);
           }
           t = objectT;
         }
         if (objectT === Infinity) {
-          colorPx(px, scene.ambient);
+          colorPx(pixelIndex, scene.ambient);
         }
       }
     }
     ctx.putImageData(imageData, 0, 0);
   }
 
-  scene.objects.push(new Sphere(
-    { x: 2.5, y: 2, z: -9 },
-    1,
-    new Color(0, 255, 255),
-  ));
-  scene.objects.push(new Sphere(
-    { x: 0, y: -2, z: -13 },
-    2,
-    new Color(255, 0, 0),
-  ));
-  scene.objects.push(new Sphere(
-    { x: -5, y: 3, z: -17.5 },
-    3,
-    new Color(0, 0, 255),
-  ));
-  scene.objects.push(new Sphere(
-    { x: 4, y: -2, z: -9 },
-    1,
-    new Color(0, 255, 0),
-  ));
+  scene.objects.push(
+    new Sphere({ x: 2.5, y: 2, z: -9 }, 1, new Color(0, 255, 255)),
+  );
+  scene.objects.push(
+    new Sphere({ x: 0, y: -2, z: -13 }, 2, new Color(255, 0, 0)),
+  );
+  scene.objects.push(
+    new Sphere({ x: -5, y: 3, z: -17.5 }, 3, new Color(0, 0, 255)),
+  );
+  scene.objects.push(
+    new Sphere({ x: 4, y: -2, z: -9 }, 1, new Color(0, 255, 0)),
+  );
 
   render(scene);
 });
