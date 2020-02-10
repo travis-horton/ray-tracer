@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function render() {
-    const { objects, camera, light } = scene;
+    const { camera, objects, light, ambient } = scene;
 
     for (let j = 0; j < HEIGHT; j += 1) {
       for (let i = 0; i < WIDTH; i += 1) {
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
           t = objectT;
         }
         if (objectT === Infinity) {
-          colorPixel(pixelIndex, scene.ambient);
+          colorPixel(pixelIndex, ambient);
         }
       }
     }
