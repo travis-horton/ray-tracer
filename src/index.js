@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     computeNormal(pointHit) {
-      return pointHit.subtract(this.p).normalize();
+      const normal = pointHit.subtract(this.p).normalize();
+      normal.z = -normal.z;
+      return normal;
     }
   }
 
@@ -55,14 +57,27 @@ document.addEventListener('DOMContentLoaded', () => {
     data[pixelIndex * 4 + 3] = 255;
   }
 
-  const scene = {
-    camera: { coord: new Vector(0, 0, 0) },
-    objects: [],
-    light: new Vector(-10, 20, -40),
-    ambient: new Color(35, 15, 25),
-  };
+  function getRayCamToPix(i, j) {
+    return new Vector(
+      (((2 * (i + 0.5)) / WIDTH) - 1) * (WIDTH / HEIGHT),
+      (1 - ((2 * (j + 0.5)) / HEIGHT)),
+      -3,
+    );
+  }
 
-  function render() {
+  function getPixelColor(normalRayCamToPix, object, objectT, light) {
+    const pointHit = normalRayCamToPix.multiply(objectT);
+    const n = object.computeNormal(pointHit);
+    const lightVector = light.subtract(pointHit).normalize();
+    const directLight = Math.max(dotProduct(n, lightVector), 0);
+    return new Color(
+      Math.floor(object.c.r * directLight),
+      Math.floor(object.c.g * directLight),
+      Math.floor(object.c.b * directLight),
+    );
+  }
+
+  function render(scene) {
     const {
       camera, objects, light, ambient,
     } = scene;
@@ -70,33 +85,25 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let j = 0; j < HEIGHT; j += 1) {
       for (let i = 0; i < WIDTH; i += 1) {
         const pixelIndex = (i + (j * WIDTH));
-        const x = (((2 * (i + 0.5)) / WIDTH) - 1) * (WIDTH / HEIGHT);
-        const y = (1 - ((2 * (j + 0.5)) / HEIGHT));
-        const z = -3;
-        const normalizedRayFromCameraToThisPixel = new Vector(x, y, z).normalize();
+        const rayCamToPix = getRayCamToPix(i, j);
+        const normalRayCamToPix = rayCamToPix.normalize();
 
         let t = Infinity;
         let objectT = Infinity;
 
-        for (let k = 0; k < objects.length; k += 1) {
+        objects.forEach((object) => {
           objectT = Math.min(
             objectT,
-            objects[k].intersect(normalizedRayFromCameraToThisPixel, camera),
+            object.intersect(normalRayCamToPix, camera),
           );
+          
           if (objectT < t) {
-            const pointHit = normalizedRayFromCameraToThisPixel.multiply(objectT);
-            const n = objects[k].computeNormal(pointHit);
-            const lightVector = light.subtract(pointHit).normalize();
-            const directLight = Math.max(dotProduct(n, lightVector), 0);
-            const objectColor = {
-              r: objects[k].c.r * directLight,
-              g: objects[k].c.g * directLight,
-              b: objects[k].c.b * directLight,
-            };
+            const objectColor = getPixelColor(normalRayCamToPix, object, objectT, light);
             colorPixel(pixelIndex, objectColor);
           }
           t = objectT;
-        }
+        });
+
         if (objectT === Infinity) {
           colorPixel(pixelIndex, ambient);
         }
@@ -105,8 +112,14 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.putImageData(imageData, 0, 0);
   }
 
+  const scene = {
+    camera: { coord: new Vector(0, 0, 0) },
+    objects: [],
+    light: new Vector(0, 4, -9),
+    ambient: new Color(35, 15, 25),
+  };
   const sphere1 = new Sphere({ x: 2.5, y: 2, z: -9 }, 1, new Color(0, 255, 255));
-  const sphere2 = new Sphere({ x: 0, y: -2, z: -13 }, 2, new Color(255, 0, 0));
+  const sphere2 = new Sphere({ x: 0, y: -2, z: -20 }, 2, new Color(255, 0, 0));
   const sphere3 = new Sphere({ x: -5, y: 3, z: -17.5 }, 3, new Color(0, 0, 255));
   const sphere4 = new Sphere({ x: 4, y: -2, z: -9 }, 1, new Color(0, 255, 0));
   scene.objects.push(sphere1, sphere2, sphere3, sphere4);
