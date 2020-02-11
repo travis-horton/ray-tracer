@@ -1,5 +1,5 @@
 import Color from 'rgb-color-class';
-import Vector3d from './modules/3d-vectors';
+import {Vector3d as Vector} from './modules/3d-vectors';
 
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.querySelector('body');
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const imageData = ctx.getImageData(0, 0, c.width, c.height);
 
   const { data } = imageData;
-  const { dotProduct } = Vector3d;
+  const { dotProduct } = Vector;
 
   function vMinus(v1, v2) {
     const newVector = {};
@@ -41,11 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function normalize(v) {
-    const normalV = {};
-    normalV.x = v.x / (vLength(v));
-    normalV.y = v.y / (vLength(v));
-    normalV.z = v.z / (vLength(v));
-    return normalV;
+    return new Vector(
+      v.x / (vLength(v)),
+      v.y / (vLength(v)),
+      v.z / (vLength(v)),
+    )
   }
 
   class Sphere {
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     intersect(ray, camera) {
-      const oMinusP = vMinus(camera.p, this.p);
+      const oMinusP = camera.coord.subtract(this.p);
       const a1 = dotProduct(ray, ray);
       const b1 = 2 * (dotProduct(ray, oMinusP));
       const c1 = dotProduct(oMinusP, oMinusP) - (this.r * this.r);
@@ -86,13 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function lightVector(light, pointHit) {
-    return normalize(vMinus(light, pointHit));
+    return light.subtract(pointHit).normalize();
   }
 
   const scene = {
-    camera: { p: { x: 0, y: 0, z: 0 } },
+    camera: { coord: new Vector(0, 0, 0) },
     objects: [],
-    light: { x: -10, y: 20, z: -40 },
+    light: new Vector(-10, 20, -40),
     ambient: new Color(35, 15, 25),
   };
 
@@ -102,11 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let j = 0; j < HEIGHT; j += 1) {
       for (let i = 0; i < WIDTH; i += 1) {
         const pixelIndex = (i + (j * WIDTH));
-        const normalizedRayFromCameraToThisPixel = normalize({
-          x: (((2 * (i + 0.5)) / WIDTH) - 1) * (WIDTH / HEIGHT),
-          y: (1 - ((2 * (j + 0.5)) / HEIGHT)),
-          z: -3,
-        });
+        const x = (((2 * (i + 0.5)) / WIDTH) - 1) * (WIDTH / HEIGHT);
+        const y = (1 - ((2 * (j + 0.5)) / HEIGHT));
+        const z = -3;
+        const normalizedRayFromCameraToThisPixel = new Vector(x, y ,z).normalize();
 
         let t = Infinity;
         let objectT = Infinity;
