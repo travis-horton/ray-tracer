@@ -1,6 +1,6 @@
 import Color from 'rgb-color-class';
-import { Vector3d as Vector } from './modules/3d-vectors';
-import { Sphere } from './modules/3d-objects';
+import Vector from './modules/3d-vectors';
+import Sphere from './modules/3d-objects';
 import { colorPixel, getPixelColor } from './modules/color-formulas';
 
 const WIDTH = 800;

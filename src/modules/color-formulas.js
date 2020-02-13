@@ -1,10 +1,10 @@
 import Color from 'rgb-color-class';
-import { Vector3d as Vector } from './3d-vectors';
-import { Sphere } from './3d-objects';
+import Vector from './3d-vectors';
+
 const { dotProduct } = Vector;
 
 export function colorPixel(pixelIndex, color, imageData) {
-  const { data } = imageData
+  const { data } = imageData;
   data[pixelIndex * 4] = color.r;
   data[pixelIndex * 4 + 1] = color.g;
   data[pixelIndex * 4 + 2] = color.b;
@@ -22,4 +22,3 @@ export function getPixelColor(normalRayCamToPix, object, objectT, light) {
     Math.floor(object.c.b * directLight),
   );
 }
-

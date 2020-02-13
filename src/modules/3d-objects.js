@@ -1,7 +1,8 @@
-import { Vector3d as Vector } from './3d-vectors';
+import Vector from './3d-vectors';
+
 const { dotProduct } = Vector;
 
-export class Sphere {
+export default class Sphere {
   constructor(center, radius, color) {
     this.p = center;
     this.r = radius;
@@ -30,4 +31,3 @@ export class Sphere {
     return normal;
   }
 }
-
