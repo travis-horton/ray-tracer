@@ -2,9 +2,9 @@ import Color from 'rgb-color-class';
 import { Vector3d as Vector } from './modules/3d-vectors';
 import { Sphere } from './modules/3d-objects';
 import { colorPixel, getPixelColor } from './modules/color-formulas';
+
 const WIDTH = 800;
 const HEIGHT = 600;
-const { dotProduct } = Vector;
 
 function getRayCamToPix(i, j, w, h) {
   return new Vector(
@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const ctx = c.getContext('2d');
   const imageData = ctx.getImageData(0, 0, c.width, c.height);
-  const { data } = imageData;
 
   const scene = {
     camera: { coord: new Vector(0, 0, 0) },
