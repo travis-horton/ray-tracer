@@ -1,7 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const body = document.querySelector('body');
-  body.style = 'margin: auto';
-
+export const renderRayTracerInElement = (parentContainerId) => {
   const WIDTH = 800;
   const HEIGHT = 600;
 
@@ -11,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   c.height = HEIGHT;
   c.style = 'border: 1px solid black; margin: auto';
   const ctx = c.getContext('2d');
-  body.appendChild(c);
+  const parentContainer = document.getElementById(parentContainerId);
+  parentContainer.appendChild(c);
 
   const imageData = ctx.getImageData(0, 0, c.width, c.height);
   const { data } = imageData;
@@ -168,4 +166,4 @@ document.addEventListener('DOMContentLoaded', () => {
   ));
 
   render(scene);
-});
+};
