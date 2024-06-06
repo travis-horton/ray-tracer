@@ -1,4 +1,6 @@
-export const renderRayTracerInElement = (parentContainerId) => {
+import Color from './color';
+
+const renderRayTracerInElement = (parentContainerId) => {
   const WIDTH = 800;
   const HEIGHT = 600;
 
@@ -44,19 +46,6 @@ export const renderRayTracerInElement = (parentContainerId) => {
     normalV.y = v.y / (vLength(v));
     normalV.z = v.z / (vLength(v));
     return normalV;
-  }
-
-  class Color {
-    constructor(r, g, b) {
-      this.r = r;
-      this.g = g;
-      this.b = b;
-    }
-
-    rgb() {
-      const { r, g, b } = this;
-      return `rgb(${r}, ${g}, ${b})`;
-    }
   }
 
   class Sphere {
@@ -167,3 +156,5 @@ export const renderRayTracerInElement = (parentContainerId) => {
 
   render(scene);
 };
+
+export default renderRayTracerInElement;
