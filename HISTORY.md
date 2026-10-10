@@ -4,6 +4,9 @@ Newest first.
 
 ## October 2026
 
+**ray-tracer #16: the project's past, written down** · [PR #16](https://github.com/travis-horton/ray-tracer/pull/16) · merged 26.1010.1210 · v1.0.2
+- Behind the scenes: the history file now covers the whole project, from its first version to 26.1010, not just today's changes.
+
 **ray-tracer #10: the ray tracer in tidy pieces, with checks** · [PR #10](https://github.com/travis-horton/ray-tracer/pull/10) · merged 26.1010.1159 · v1.0.1
 - Behind the scenes: the code is now split into small parts (the 3D math, the spheres, the colors, the scene, the drawing loop) instead of one long block, still with no build step. The picture on travish.com is identical down to the last pixel, and new automatic checks fail if it ever changes.
 - Fixed: the project's own demo page pointed at a file that no longer existed, so it showed nothing; it draws the picture again.
