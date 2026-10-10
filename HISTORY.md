@@ -4,6 +4,11 @@ Newest first.
 
 ## October 2026
 
+**ray-tracer #17: five library updates combined, and a newer tidiness checker** · [PR #17](https://github.com/travis-horton/ray-tracer/pull/17) · merged 26.1010.1230 · v1.0.3
+- Behind the scenes: the code-tidiness checker moved to its current version with a new settings file, which clears all 21 known security warnings in the helper libraries it uses; a helper library nothing used was removed. The ray tracer and its picture are unchanged.
+  Try it: open Terminal and paste
+      cd ~/code/ray-tracer && npm install && npm run lint && npm test
+
 **ray-tracer #16: the project's past, written down** · [PR #16](https://github.com/travis-horton/ray-tracer/pull/16) · merged 26.1010.1210 · v1.0.2
 - Behind the scenes: the history file now covers the whole project, from its first version to 26.1010, not just today's changes.
 
