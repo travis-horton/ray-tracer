@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="author" content="kiddspazz">
     <title>ray tracer</title>
-    <script src="./ray-tracer.mjs"></script>
   </head>
-
-  <header></header>
   <body>
     <main>
-    <div>
-        <p>first try at a ray tracer</p>
-    </div>
+      <p>first try at a ray tracer</p>
+      <div id="box"></div>
     </main>
+    <script type="module">
+      import renderRayTracerInElement from './ray-tracer.js';
+
+      renderRayTracerInElement('box');
+    </script>
   </body>
-  <footer></footer>
 </html>

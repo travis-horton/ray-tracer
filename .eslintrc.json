@@ -15,5 +15,37 @@
         "sourceType": "module"
     },
     "rules": {
-    }
+        "import/extensions": [
+            "error",
+            "always",
+            {
+                "ignorePackages": true
+            }
+        ],
+        "no-param-reassign": [
+            "error",
+            {
+                "props": true,
+                "ignorePropertyModificationsFor": [
+                    "data"
+                ]
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "test/**"
+            ],
+            "env": {
+                "node": true
+            },
+            "globals": {
+                "globalThis": "writable"
+            },
+            "rules": {
+                "import/no-unresolved": "off"
+            }
+        }
+    ]
 }
