@@ -4,6 +4,9 @@ Newest first.
 
 ## October 2026
 
+**ray-tracer #18: the change log catches up on entries it missed** · [PR #18](https://github.com/travis-horton/ray-tracer/pull/18) · merged 26.1015.0728 · v1.0.4
+- Behind the scenes: the robot that writes this file after each change now also writes in any earlier finished change it missed, oldest first, with a "recorded late" note when it is more than an hour late. If GitHub won't answer one of its lookups, it skips only that one, records the newest change anyway, and fills the gap on a later run.
+
 **ray-tracer #17: five library updates combined, and a newer tidiness checker** · [PR #17](https://github.com/travis-horton/ray-tracer/pull/17) · merged 26.1010.1230 · v1.0.3
 - Behind the scenes: the code-tidiness checker moved to its current version with a new settings file, which clears all 21 known security warnings in the helper libraries it uses; a helper library nothing used was removed. The ray tracer and its picture are unchanged.
   Try it: open Terminal and paste
