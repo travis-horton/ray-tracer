@@ -1,6 +1,6 @@
 {
   "name": "ray-tracer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "my first crack at a rayTracer",
   "main": "ray-tracer.js",
   "scripts": {
